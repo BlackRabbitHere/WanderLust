@@ -7,7 +7,7 @@ const ejsMate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js");
 const ExpressError=require("./utils/ExpressError.js");
 const {listingSchema}=require("./Schema.js")
-
+const review=require("./models/reviews.js");
 
 app.use(methodOverride("_method"));
 app.engine("ejs",ejsMate);
@@ -51,6 +51,29 @@ app.get("/listing/new",(req,res)=>{
     
 })
 
+//Reviews
+//Post Review Route
+app.post("/listings/:id/reviews",async(req,res)=>{
+    let listing=await Listing.findById(req.params.id);
+    let newReview=new review(req.body.review);
+    listing.reviews.push(newReview);
+    await newReview.save();
+    await listing.save();
+    res.redirect(`/listings/${listing._id}`);
+    // console.log("new review saved");
+    // res.send("new Review Saved");
+})
+
+//Delete Review Route
+app.delete("/listings/:id/reviews/:reviewId",wrapAsync (async(req,res)=>{
+    let {id,reviewId}=req.params;
+    Listing.findByIdAndUpdate(id,{$pull:{review:reviewId}});
+    await review.findByIdAndDelete(reviewId);
+
+    res.redirect(`/listings/${id}`);
+}))
+
+
 const validateListing=(req,res,next)=>{
     // let result=listingSchema.validate(req.body);
     // console.log(result);
@@ -68,7 +91,7 @@ const validateListing=(req,res,next)=>{
 
 app.get("/listings/:id",wrapAsync(async(req,res,next)=>{
     let {id}= req.params;
-    const listing=await Listing.findById(id);
+    const listing=await Listing.findById(id).populate("reviews");// populate is used for getting reviews data in show ejs
     res.render("listings/show.ejs",{listing});
 }))
 
