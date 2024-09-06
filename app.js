@@ -4,16 +4,18 @@ const mongoose = require("mongoose");
 const path=require("path");
 const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
-const wrapAsync=require("./utils/wrapAsync.js");
 const ExpressError=require("./utils/ExpressError.js");
-const {listingSchema}=require("./Schema.js")
-const review=require("./models/reviews.js");
+app.use(express.urlencoded({ extended: true })); // For parsing form data
+app.use(express.json()); // For parsing JSON data
+
+
+const listings=require("./routes/listing.js");
+const reviews=require("./routes/review.js");
+
 
 app.use(methodOverride("_method"));
 app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
-
-const Listing=require("./models/listing.js") // require the exported module
 const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
 
 async function main() {
@@ -37,111 +39,9 @@ app.get("/",(req,res)=>{
     res.send("port is working");
 })
 
+app.use("/listings",listings);
 
-// Index Route get /Listings for showing all cards
-app.get("/listings",wrapAsync(async (req,res,next)=>{
-    const allListing=await Listing.find({});
-    res.render("listings/index.ejs",{allListing});
-}));
-
-// New & create Route 
-
-app.get("/listing/new",(req,res)=>{
-    res.render("listings/new.ejs");
-    
-})
-
-//Reviews
-//Post Review Route
-app.post("/listings/:id/reviews",async(req,res)=>{
-    let listing=await Listing.findById(req.params.id);
-    let newReview=new review(req.body.review);
-    listing.reviews.push(newReview);
-    await newReview.save();
-    await listing.save();
-    res.redirect(`/listings/${listing._id}`);
-    // console.log("new review saved");
-    // res.send("new Review Saved");
-})
-
-//Delete Review Route
-app.delete("/listings/:id/reviews/:reviewId",wrapAsync (async(req,res)=>{
-    let {id,reviewId}=req.params;
-    Listing.findByIdAndUpdate(id,{$pull:{review:reviewId}});
-    await review.findByIdAndDelete(reviewId);
-
-    res.redirect(`/listings/${id}`);
-}))
-
-
-const validateListing=(req,res,next)=>{
-    // let result=listingSchema.validate(req.body);
-    // console.log(result);
-    let {error}=listingSchema.validate(req.body);
-    console.log(error);
-    if(error){
-        let errMsg=error.details.map((el)=>el.message).join(",")
-        throw new ExpressError(400,errMsg);
-    }else{
-        next();
-    }
-}
-
-// Show route /listing/:id
-
-app.get("/listings/:id",wrapAsync(async(req,res,next)=>{
-    let {id}= req.params;
-    const listing=await Listing.findById(id).populate("reviews");// populate is used for getting reviews data in show ejs
-    res.render("listings/show.ejs",{listing});
-}))
-
-//create Route
-
-app.post("/listings",validateListing,wrapAsync(async(req,res,next)=>{
-    // try{
-    let listing=req.body.listing; //as we have added listing[name] in it
-    // if(!req.body.listing){
-    //     throw new ExpressError(400,"Send Valid data for  listing")
-    // }
-    const newListing= new Listing(req.body.listing)
-    await newListing.save();
-    res.redirect("/listings");
-    console.log(listing);
-    // }catch(err){
-    //     next(err);
-    // }
-
-
-}))
-
-// Edit 
-app.get("/listings/:id/edit",validateListing,wrapAsync(async (req,res,next)=>{
-    let { id }=req.params;
-    const listing=await Listing.findById(id);
-    console.log(listing);
-    res.render("listings/edit.ejs",{listing});
-
-}))
-
-//Update
-
-app.put("/listings/:id",validateListing,wrapAsync(async (req,res,next)=>{
-    let {id}= req.params;
-    if(!req.body.listing){
-        throw new ExpressError(400,"Send Valid data for  listing")
-    }
-    // console.log(req.body.listing.image.url);
-    await Listing.findByIdAndUpdate(id,{...req.body.listing});
-    res.redirect(`/listings/${id}`);
-}))
-
-// Delete Route
-app.delete("/listings/:id",wrapAsync(async (req,res)=>{
-    let {id}=req.params;
-    let deleteListing=await Listing.findByIdAndDelete(id);
-    console.log(deleteListing);
-    res.redirect("/listings");
-}))
+app.use("/listings/:id/reviews",reviews);
 
 // app.get("/testListing",async (req,res)=>{
 //     let sampleListing= new Listing({
