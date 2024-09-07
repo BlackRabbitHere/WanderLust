@@ -7,7 +7,7 @@ const ejsMate=require("ejs-mate");
 const ExpressError=require("./utils/ExpressError.js");
 app.use(express.urlencoded({ extended: true })); // For parsing form data
 app.use(express.json()); // For parsing JSON data
-
+const session = require("express-session")
 
 const listings=require("./routes/listing.js");
 const reviews=require("./routes/review.js");
@@ -33,7 +33,13 @@ main() // Promise
     })
     .catch((err) => console.log(err));
 
+const sessionOptions={
+    secret:"mysupersecretcode",
+    resave: false,
+    saveUninitialized:true,
+};
 
+app.use(session(sessionOptions));
 
 app.get("/",(req,res)=>{
     res.send("port is working");
