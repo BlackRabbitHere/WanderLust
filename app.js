@@ -8,7 +8,7 @@ const ExpressError=require("./utils/ExpressError.js");
 app.use(express.urlencoded({ extended: true })); // For parsing form data
 app.use(express.json()); // For parsing JSON data
 const session = require("express-session")
-
+const flash= require("connect-flash");
 const listings=require("./routes/listing.js");
 const reviews=require("./routes/review.js");
 
@@ -33,20 +33,32 @@ main() // Promise
     })
     .catch((err) => console.log(err));
 
+    // app cookies
 const sessionOptions={
     secret:"mysupersecretcode",
     resave: false,
     saveUninitialized:true,
+    cookie:{
+        expires: Date.now() + 7 * 24 * 60 *60 *1000,
+        maxAge:7 * 24 * 60 *60 *1000,
+        httpOnly: true,
+    }   
 };
-
-app.use(session(sessionOptions));
 
 app.get("/",(req,res)=>{
     res.send("port is working");
 })
 
-app.use("/listings",listings);
+app.use(session(sessionOptions)); // to use sessions
+app.use(flash()); // flash should be required before routes
 
+app.use((req,res,next)=>{
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+})  
+
+app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews);
 
 // app.get("/testListing",async (req,res)=>{
