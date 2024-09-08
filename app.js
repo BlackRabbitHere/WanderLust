@@ -11,6 +11,11 @@ const session = require("express-session")
 const flash= require("connect-flash");
 const listings=require("./routes/listing.js");
 const reviews=require("./routes/review.js");
+const passport= require("passport")
+const LocalStrategy= require("passport-local")
+const User = require("./models/user.js")
+
+const userRouter = require("./routes/user.js");
 
 
 app.use(methodOverride("_method"));
@@ -52,14 +57,37 @@ app.get("/",(req,res)=>{
 app.use(session(sessionOptions)); // to use sessions
 app.use(flash()); // flash should be required before routes
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser()); // to serialize user related info for not logging again
+passport.deserializeUser(User.deserializeUser());
+
+
+
 app.use((req,res,next)=>{
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     next();
 })  
 
+app.get("/demouser", async (req,res,next)=>{
+    // try{
+    let fakeUser = new User({
+        email:"student1234@gmail.com",
+        username:"hello123",
+    })
+    let registerUser= await User.register(fakeUser,"helloworld") // contains username email and password
+    res.send(registerUser);
+    // } catch(err){
+    //     next(err)
+    // }
+})
+
 app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews);
+app.use("/user",userRouter);
 
 // app.get("/testListing",async (req,res)=>{
 //     let sampleListing= new Listing({
