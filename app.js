@@ -69,21 +69,22 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req,res,next)=>{
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
+    res.locals.currUser = req.user; // storing the current user id everytime
     next();
 })  
 
-app.get("/demouser", async (req,res,next)=>{
-    // try{
-    let fakeUser = new User({
-        email:"student1234@gmail.com",
-        username:"hello123",
-    })
-    let registerUser= await User.register(fakeUser,"helloworld") // contains username email and password
-    res.send(registerUser);
-    // } catch(err){
-    //     next(err)
-    // }
-})
+// app.get("/demouser", async (req,res,next)=>{
+//     // try{
+//     let fakeUser = new User({
+//         email:"student1234@gmail.com",
+//         username:"hello123",
+//     })
+//     let registerUser= await User.register(fakeUser,"helloworld") // contains username email and password
+//     res.send(registerUser);
+//     // } catch(err){
+//     //     next(err)
+//     // }
+// })
 
 app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews);
