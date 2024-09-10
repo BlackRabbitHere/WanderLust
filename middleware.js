@@ -11,7 +11,7 @@ module.exports.isLoggedIn=(req,res,next)=>{
     // redirectUrl save
     // console.log(req.path,"..",req.originalUrl);
     req.session.redirectUrl = req.originalUrl;
-    req.flash("error","You are not the owner of this listing!");
+    req.flash("error","You are not the Logged in login to continue!");
     return res.redirect("/user/login");
     }
     next(); 
