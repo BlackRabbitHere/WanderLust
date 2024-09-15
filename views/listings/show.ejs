@@ -1,4 +1,7 @@
 <% layout("/layouts/boilerplate")%>
+<script>
+    const mapToken1="<%= process.env.MAP_TOKEN %>";
+</script>
 <!-- for the showing of card data on clicking it-->
 <body>
     <div class="row">
@@ -71,8 +74,9 @@
             <% } %>
         <hr>
 
-        <h4>All Reviews</h4>
+        <% if(listing.reviews.length > 0) { %>
         <div class="row">
+            <h4>All Reviews</h4>
         <%for(review of listing.reviews){%>
             <div class="card col-5 ms-3 mb-3">
                 <div class="card-body">
@@ -86,11 +90,18 @@
                 </div>
                 
             </div>
-            
             <%}%>
         </div>
+        <%}%>
 
-</body>
+        <div class="row">
+        <div class="col-6 offset-3 mb-3">
+            <h3>Where you'll be</h3>
+            <div id="map"></div> 
+        </div>
+
+    </div>
+<script src="/js/map.js"></script>
 
 
 <!-- toLocaleString() converts the no. by adding commaas into it -->

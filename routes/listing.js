@@ -4,18 +4,19 @@ const wrapAsync=require("../utils/wrapAsync.js");
 const Listing=require("../models/listing.js") // require the exported module
 const {validateListing,isOwner,isLoggedIn}=require("../middleware.js");
 const listingController=require("../controllers/listing.js")
-const multer=require('multer')
-const upload=multer({dest:'uploads/'})
-
-
+const multer=require("multer")
+const {storage}=require("../CloudConfig.js")
+const upload=multer({storage})
 
 router
     .route("/")
     // Index Route get /Listings for showing all cards
     .get(wrapAsync(listingController.index))
     //create Route
-    .post(isLoggedIn,validateListing,wrapAsync(listingController.createListing))
-
+    .post(isLoggedIn,upload.single("listing[image]"),validateListing,wrapAsync(listingController.createListing))
+    // .post(upload.single("listing[image]"),(req,res)=>{
+    //     res.send(req.file);
+    // });
 // New & create Route 
 router.get("/new",isLoggedIn,listingController.renderNewForm);
 
@@ -25,7 +26,7 @@ router
     // Show route /listing/:id
     .get(wrapAsync(listingController.showListing))
     //update
-    .put(isLoggedIn,isOwner,validateListing,wrapAsync(listingController.updateListing))
+    .put(isLoggedIn,isOwner,upload.single("listing[image]"),validateListing,wrapAsync(listingController.updateListing))
     // Delete Route
     .delete(isLoggedIn,isOwner,wrapAsync(listingController.destroyListing))
 
