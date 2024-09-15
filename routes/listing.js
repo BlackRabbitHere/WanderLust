@@ -8,6 +8,10 @@ const multer=require("multer")
 const {storage}=require("../CloudConfig.js")
 const upload=multer({storage})
 
+router.get("/filter/:id", wrapAsync(listingController.filter));                              //Filter Route-----------------
+
+router.get("/search", wrapAsync(listingController.search));
+
 router
     .route("/")
     // Index Route get /Listings for showing all cards

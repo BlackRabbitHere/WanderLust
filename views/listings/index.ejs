@@ -30,6 +30,10 @@
     display: flex;
     align-items: center;
   }
+  a{
+    text-decoration: none;
+    color:black;
+  }
 </style>
 <body>
     <!-- <h3>All Listings</h3> -->
@@ -37,58 +41,82 @@
     <!-- <form method="get" action="/listing/new">
         <button>Create New Listing</button>
     </form> -->
+    <div class="filters-main">
+    <a href="/listings/filter/Trending">
     <div id="filters" data-bs-toggle="collapse">
-      <div class="filter">
+      <div class="filter Trending">
         <div><i class="fa-solid fa-fire"></i></div>
         <p>Trending</p>
       </div>
-      <div class="filter">
+      <a href="/listings/filter/Rooms">
+      <div class="filter Rooms">
         <div><i class="fa-solid fa-bed"></i></div>
         <p>Rooms</p>
       </div>
-      <div class="filter">
+    </a>
+      <a href="/listings/filter/Iconic Cities">
+      <div class="filter Iconic-Cities">
         <div><i class="fa-solid fa-mountain-city"></i></div>
         <p>Iconic Cities</p>
       </div>
-      <div class="filter">
+    </a>
+      <a href="/listings/filter/Mountains">
+      <div class="filter Mountains">
         <div><i class="fa-solid fa-bed"></i></div>
         <p>Mountains</p>
       </div>
-      <div class="filter">
+    </a>
+      <a href="/listings/filter/Castle">
+      <div class="filter Castle">
         <div><i class="fa-brands fa-fort-awesome"></i></div>
         <p>Castle</p>
       </div>
-      <div class="filter">
+    </a>
+      <a href="/listings/filter/Amazing Pools">
+      <div class="filter Amazing-Pools">
         <div><i class="fa-solid fa-person-swimming"></i></div>
         <p>Amazing Pools</p>
       </div>
-      <div class="filter">
+    </a>
+      <a href="/listings/filter/Camping">
+      <div class="filter Camping">
         <div><i class="fa-solid fa-campground"></i></div>
         <p>Camping</p>
       </div>
-      <div class="filter">
+    </a>
+      <a href="/listings/filter/Farms">
+      <div class="filter Farms">
         <div><i class="fa-solid fa-cow"></i></div>
         <p>Farms</p>
       </div>
-      <div class="filter">
+    </a>
+      <a href="/listings/filter/Arctic">
+      <div class="filter Arctic">
         <div><i class="fa-solid fa-snowflake"></i></div>
         <p>Arctic</p>
       </div>
-      <div class="filter">
+    </a>
+      <a href="/listings/filter/Dome">
+      <div class="filter Dome">
         <div><i class="fa-solid fa-igloo"></i></div>
         <p>Dome</p>
       </div>
+    </a>
+      <a href="/listings/filter/Boat">
       <div class="filter">
         <div><i class="fa-solid fa-ferry"></i></div>
         <p>Boat</p>
       </div>
-      <div class="tax-toggle">
+    </a>
+  
+  <div class="tax-toggle">
         <div class="form-check-reverse form-switch">
           <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
           <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
         </div>
-      </div>
     </div>
+  </div>
+</div>
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
         <% for(listing of allListing){ %>
             <a href="/listings/<%= listing._id %> " class="listing-link">
@@ -113,7 +141,7 @@
      } %>
 </ul> -->
 </body>
-
+<script src="/js/filter.js"></script>
 <script>
   let taxSwitch=document.getElementById("flexSwitchCheckDefault");
   taxSwitch.addEventListener("click",()=>{
