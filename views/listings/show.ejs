@@ -1,6 +1,10 @@
 <% layout("/layouts/boilerplate")%>
 <script>
     const mapToken1="<%= process.env.MAP_TOKEN %>";
+    const listing= <%- JSON.stringify(listing) %>;
+    if(listing.geometry.coordinates.length==0){
+        listing.geometry.coordinates=[77.209006,28.613895];
+    }
 </script>
 <!-- for the showing of card data on clicking it-->
 <body>
