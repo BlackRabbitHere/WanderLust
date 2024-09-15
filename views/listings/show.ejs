@@ -1,4 +1,10 @@
 <% layout("/layouts/boilerplate")%>
+<style>
+    #map{
+        height: 70vh;
+        width:80vh;
+    }
+</style>
 <script>
     const mapToken1="<%= process.env.MAP_TOKEN %>";
     const listing= <%- JSON.stringify(listing) %>;
