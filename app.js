@@ -55,9 +55,9 @@ const sessionOptions={
     }   
 };
 
-app.get("/",(req,res)=>{
-    res.send("port is working");
-})
+// app.get("/",(req,res)=>{
+//     res.send("port is working");
+// })
 
 app.use(session(sessionOptions)); // to use sessions
 app.use(flash()); // flash should be required before routes
