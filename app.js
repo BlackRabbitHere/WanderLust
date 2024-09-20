@@ -13,6 +13,7 @@ const ExpressError=require("./utils/ExpressError.js");
 app.use(express.urlencoded({ extended: true })); // For parsing form data
 app.use(express.json()); // For parsing JSON data
 const session = require("express-session")
+const MongoStore=require('connect-mongo');
 const flash= require("connect-flash");
 const listings=require("./routes/listing.js");
 const reviews=require("./routes/review.js");
@@ -26,15 +27,8 @@ const userRouter = require("./routes/user.js");
 app.use(methodOverride("_method"));
 app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
-const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
-
-async function main() {
-  await mongoose.connect(MONGO_URL);
-}
-
-app.set("view engine","ejs");
-app.set("views",path.join(__dirname,"views"));
-app.use(express.urlencoded({extended:true}));
+// const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust";
+const dbURL=process.env.ATLASDB_URL;
 
 
 main() // Promise
@@ -43,9 +37,30 @@ main() // Promise
     })
     .catch((err) => console.log(err));
 
-    // app cookies
-const sessionOptions={
-    secret:"mysupersecretcode",
+ 
+
+async function main() {
+  await mongoose.connect(dbURL);
+}
+
+app.set("view engine","ejs");
+app.set("views",path.join(__dirname,"views"));
+app.use(express.urlencoded({extended:true}));
+
+
+
+const store= MongoStore.create({
+    mongoUrl: dbURL,
+    crypto:{
+        secret:process.env.SECRET,
+    },
+    touchAfter: 24*3600,
+})
+
+   // app cookies
+   const sessionOptions={
+    store:store,
+    secret:process.env.SECRET,
     resave: false,
     saveUninitialized:true,
     cookie:{
@@ -55,6 +70,10 @@ const sessionOptions={
     }   
 };
 
+
+store.on("error",()=>{
+    console.log("Error in Mongo Session store",err)
+})
 // app.get("/",(req,res)=>{
 //     res.send("port is working");
 // })
