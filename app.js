@@ -74,9 +74,9 @@ const store= MongoStore.create({
 store.on("error",()=>{
     console.log("Error in Mongo Session store",err)
 })
-// app.get("/",(req,res)=>{
-//     res.send("port is working");
-// })
+app.get("/",(req,res)=>{
+    res.redirect("/listings");
+})
 
 app.use(session(sessionOptions)); // to use sessions
 app.use(flash()); // flash should be required before routes
