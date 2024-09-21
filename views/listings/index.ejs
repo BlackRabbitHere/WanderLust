@@ -34,6 +34,43 @@
     text-decoration: none;
     color:black;
   }
+  @media only screen and (max-width: 600px) {
+  .filters-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .filter {
+    width: 100%;              
+    display: flex;
+    justify-content: center;   
+    align-items: center;
+    padding: 10px;
+    margin: 5px 0;            
+    background-color: #f7f7f7; 
+    border-radius: 8px;        
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  }
+
+  .filter div {
+    margin-right: 10px;  
+  }
+
+  .filter p {
+    margin: 0;
+    font-size: 14px;    
+  }
+
+  .tax-toggle {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .form-check-input {
+    transform: scale(1.2);  
+  }
+}
 </style>
 <body>
     <!-- <h3>All Listings</h3> -->
