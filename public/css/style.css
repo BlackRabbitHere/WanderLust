@@ -142,3 +142,18 @@
     height: 400px;
     width: 80vh;
 }
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+}
+
+.password-toggle i {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    color: #6c757d;
+}
