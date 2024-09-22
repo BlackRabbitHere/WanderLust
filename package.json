@@ -9,9 +9,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Kshitij",
   "license": "ISC",
-  "description": "",
+  "description": "Wanderlust a airbnb type hotel booking website",
   "dependencies": {
     "@mapbox/mapbox-sdk": "^0.16.1",
     "cloudinary": "^1.21.0",
