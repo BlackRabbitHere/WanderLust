@@ -1,7 +1,7 @@
 # Wanderlust - Inspired by Airbnb  
 ### Full-Stack Web Application 🚀
 
-![Visitor Count](https://profile-counter.glitch.me/{username}/count.svg) <!-- Add visitor count link here -->
+![Visitor Count](https://profile-counter.glitch.me/BlackRabbitHere/count.svg) <!-- Add visitor count link here -->
 
 ## Table of Contents
 - [Project Overview](#project-overview)
