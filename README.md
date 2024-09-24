@@ -112,16 +112,6 @@ To run this project locally, follow these steps:
 
     # Session Secret
     SECRET=your_random_secret_key
-
-    # Google OAuth
-    GOOGLE_CLIENT_ID=your_google_client_id
-    GOOGLE_CLIENT_SECRET=your_google_client_secret
-    GOOGLE_CALLBACK_URL=http://localhost:8080/auth/google/callback
-
-    # Facebook OAuth
-    FACEBOOK_APP_ID=your_facebook_app_id
-    FACEBOOK_APP_SECRET=your_facebook_app_secret
-    FACEBOOK_CALLBACK_URL=http://localhost:8080/auth/facebook/callback
     ```
 
 4. **Run the Application**:
