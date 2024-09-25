@@ -182,7 +182,52 @@
                 <div class="card-body">
                     <b><p><%=listing.title%></p></b>
                   <p>  &#8377; <%= listing.price.toLocaleString("en-IN") %>/night
-                  <i class="tax-info">&nbsp;&nbsp;+18% GST</i>
+                  <!--<i class="tax-info">&nbsp;&nbsp;+18% GST</i>-->
+                  <%
+                  let day = Math.floor(Math.random() * 2 + 2);
+                  let no = Math.floor(Math.random() * 24 + 2);
+
+    
+                  let baseDate = new Date('2024-09-11');
+                  let baseDay = baseDate.getDate();
+                  let baseMonth = baseDate.getMonth() + 1; 
+                  let baseYear = baseDate.getFullYear();
+
+   
+                  let date = baseDay + no;  
+                  let dateA = baseDay + no + day;  
+
+ 
+                  function adjustDate(day, month, year) {
+                    let daysInMonth = new Date(year, month, 0).getDate(); 
+                    while (day > daysInMonth) {
+                    day -= daysInMonth;  
+                    month += 1;  
+                    if (month > 12) {  
+                      month = 1;
+                      year += 1;
+                    }
+                    daysInMonth = new Date(year, month, 0).getDate(); // update days in the new month
+                    }
+                    return { day, month, year };
+                  }
+
+             
+              let dateObj = adjustDate(date, baseMonth, baseYear);
+              let dateAObj = adjustDate(dateA, baseMonth, baseYear);
+
+             
+                function getMonthName(month) {
+              let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+             return monthNames[month - 1];
+                }
+
+                          let month1 = getMonthName(dateObj.month);   // Month for date 1
+                          let month2 = getMonthName(dateAObj.month);  // Month for date 2
+                        %>
+                        <span style="display: block;"><span class="tax-info">&nbsp;<%= day %> nights •</span> &nbsp;<%= dateObj.day %>&nbsp;&nbsp;<%= month1%>-<%- dateAObj.day %>&nbsp;&nbsp;<%= month2%></span>
+                        <span class="price-info"><span class=" fw-bold">&nbsp;&#8377;<%= listing.price.toLocaleString("en-IN") %> </span>  night</span>
+                        <i class="tax-info tax-underline ms-1"><i class="rs-sign"><b> &#8377;</i><%= (listing.price*1.18).toLocaleString("en-In") %></b> &nbsp;total after taxes</i>
                 </p>
                 </div>
               </div>
@@ -197,7 +242,8 @@
 </ul> -->
 </body>
 <script src="/js/filter.js"></script>
-<script>
+<script src="/js/tax.js"></script>
+<!--<script>
   let taxSwitch=document.getElementById("flexSwitchCheckDefault");
   taxSwitch.addEventListener("click",()=>{
     let taxInfo=document.getElementsByClassName("tax-info");
@@ -211,5 +257,5 @@
       }
     }
   })
-</script>
+</script>-->
  
